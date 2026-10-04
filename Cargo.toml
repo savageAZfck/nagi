@@ -1,5 +1,5 @@
 [package]
-name = "nagi"
+name = "nagi-escrow"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.75"
@@ -11,6 +11,12 @@ description = "Dead-man memory escrow: Shamir-split secrets across owned custodi
 keywords = ["escrow", "shamir", "secret-sharing", "dead-man-switch", "recovery"]
 categories = ["cryptography"]
 readme = "README.md"
+
+[lib]
+# The crates.io package is `nagi-escrow` (the bare `nagi` name is taken by
+# an abandoned crate); the library keeps the short name so `use nagi::…`
+# stays stable.
+name = "nagi"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
