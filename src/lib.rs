@@ -130,6 +130,12 @@ impl Identity {
         hex::encode(self.signing.verifying_key().to_bytes())
     }
 
+    /// The signing seed — persists the identity. Guard it like a private
+    /// key; it is one.
+    pub fn seed(&self) -> [u8; 32] {
+        self.signing.to_bytes()
+    }
+
     /// Sign the canonical JSON of a payload.
     pub fn sign(&self, payload: &BTreeMap<String, Value>) -> String {
         let body = canonical(payload);
@@ -264,7 +270,9 @@ impl Plan {
     /// Ceremony id: sha256 of the canonical plan + owner key. Two
     /// ceremonies over the same plan by the same owner collide — include
     /// a nonce in the secret payload (or vary the plan) per ceremony.
-    fn ceremony_id(&self, owner_pubkey: &str) -> String {
+    /// Deterministic by construction so beacons and claims can recompute
+    /// it without storing it.
+    pub fn ceremony_id(&self, owner_pubkey: &str) -> String {
         let mut body = self.canonical();
         body.insert("owner".into(), json!(owner_pubkey));
         sha256_hex(canonical(&body).as_bytes())
