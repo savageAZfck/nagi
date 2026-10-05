@@ -168,7 +168,7 @@ mod tests {
 
     #[test]
     fn duplicate_or_zero_indices_rejected() {
-        let s = vec![vec![1u8; 8], vec![2u8; 8]];
+        let s = [vec![1u8; 8], vec![2u8; 8]];
         assert!(recombine(&[(1, s[0].clone()), (1, s[1].clone())]).is_none());
         assert!(recombine(&[(0, s[0].clone()), (1, s[1].clone())]).is_none());
     }
